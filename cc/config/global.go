@@ -47,7 +47,7 @@ var (
 		"-fno-exceptions",
 		"-Wno-multichar",
 
-		"-O3",
+		"-O2",
 		"-g",
 		"-fdebug-default-version=5",
 
@@ -108,9 +108,6 @@ var (
 		// This macro allows the bionic versioning.h to indirectly determine whether the
 		// option -Wunguarded-availability is on or not.
 		"-D__ANDROID_UNAVAILABLE_SYMBOLS_ARE_WEAK__",
-
-		// Turn off FMA which got enabled by default in clang-r445002 (http://b/218805949)
-		"-ffp-contract=off",
 	}
 
 	commonGlobalConlyflags = []string{}
@@ -140,8 +137,8 @@ var (
 		"-Werror=format-security",
 		"-nostdlibinc",
 
-		// Emit additional debug info for AutoFDO
-		"-fdebug-info-for-profiling",
+		// Enable Hot Cold splitting optimization.
+		"-mllvm -hot-cold-split=true",
 	}
 
 	commonGlobalLldflags = []string{
@@ -240,6 +237,17 @@ var (
 		// New warnings to be fixed after clang-r475365
 		"-Wno-error=single-bit-bitfield-constant-conversion", // http://b/243965903
 		"-Wno-error=enum-constexpr-conversion",               // http://b/243964282
+		"-Wno-error=deprecated-non-prototype",
+		"-Wno-error=strict-prototypes",
+		"-Wno-error=enum-conversion",
+		"-Wno-error=unused-value",
+		"-Wno-error=single-bit-bitfield-constant-conversion",
+		"-Wno-error=unused-private-field",
+		"-Wno-unused-command-line-argument",
+		"-Wno-error=thread-safety-analysis",
+		"-Wno-error=unguarded-availability",
+		"-Wno-error=logical-op-parentheses",
+		"-Wno-error=shadow-uncaptured-local",
 	}
 
 	noOverride64GlobalCflags = []string{}
@@ -305,7 +313,7 @@ var (
 
 	// prebuilts/clang default settings.
 	ClangDefaultBase         = "prebuilts/clang/host"
-	ClangDefaultVersion      = "clang-r487747c"
+	ClangDefaultVersion      = "clang-r498229b"
 	ClangDefaultShortVersion = "17"
 
 	// Directories with warnings from Android.bp files.
